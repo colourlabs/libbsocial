@@ -1,7 +1,9 @@
+#define BSOCIAL_PRIV
 #include <stdlib.h>
 #include <curl/curl.h>
 #include <bsocial-types.h>
 #include <bsocial-ctx.h>
+
 #define _BSOCIAL_RET_ERROR(x) if (x) { free(x); } return NULL 
 
 void _bsocial_ctx_free(BSocialReferenceable *r) {

@@ -1,3 +1,4 @@
+#define BSOCIAL_PRIV
 #include <stdlib.h>
 #include <bsocial-types.h>
 

@@ -34,7 +34,6 @@ target_include_directories(libbsocial PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_
 target_include_directories(libbsocial PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>")
 target_include_directories(libbsocial PUBLIC "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_link_libraries(libbsocial PRIVATE PkgConfig::PC_LIBBSOCIAL_DEPS)
-target_compile_definitions(libbsocial PRIVATE BSOCIAL_PRIV)
 
 string(JOIN " " LIBBSOCIAL_REQUIRES_PRIVATE ${LIBBSOCIAL_PKGCONFIG_DEPS})
 configure_file(cmake/libbsocial.pc.cmake libbsocial.pc @ONLY)
