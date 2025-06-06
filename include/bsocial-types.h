@@ -19,7 +19,9 @@ BSOCIAL_EXPORT void bsocial_referenceable_unref(BSocialReferenceable *r);
 typedef enum {
     BSOCIAL_ERROR_NONE = 0,
     BSOCIAL_ERROR_ALLOC_FAILED,
-    BSOCIAL_ERROR_HTTP_CLIENT_CREATION_FAILED
+    BSOCIAL_ERROR_HTTP_CLIENT_CREATION_FAILED,
+    BSOCIAL_ERROR_INVALID_PARAM
 } BSocialError;
+BSOCIAL_EXPORT char *bsocial_error_message(BSocialError error);
 
 #endif /* BSOCIAL_TYPES_H */

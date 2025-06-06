@@ -1,5 +1,6 @@
 #include <bsocial-export.h>
 #include <bsocial-types.h>
+#include <bsocial-httpclient.h>
 #include <bsocial-ctx.h>
 
 #ifndef BSOCIAL_H

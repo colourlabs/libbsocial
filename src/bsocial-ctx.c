@@ -2,6 +2,8 @@
 #include <curl/curl.h>
 #include <bsocial-types.h>
 #include <bsocial-types-priv.h>
+#include <bsocial-url-priv.h>
+#include <bsocial-httpclient.h>
 #include <bsocial-ctx.h>
 #include <bsocial-ctx-priv.h>
 
@@ -11,12 +13,19 @@ void _bsocial_ctx_free(BSocialReferenceable *r) {
 	BSocialCtx* ctx;
 	
 	ctx = BSOCIAL_CTX(r);
-	curl_easy_cleanup(ctx->curl_ctx);
+	_bsocial_urls_free_contents(&ctx->urls);
+	ctx->client->vtable.free(ctx->client);
 	free(ctx);
 }
 
-BSocialCtx *bsocial_ctx_new(BSocialError *err_ret) {
+BSocialCtx *bsocial_ctx_new(BSocialHTTPClient *(*httpclient_create)(void), BSocialError *err_ret) {
 	BSocialCtx* ctx;
+	
+	ctx = NULL;
+	if (!httpclient_create) {
+		_BSOCIAL_ERROR_SET_RET(err_ret, BSOCIAL_ERROR_INVALID_PARAM);
+		_BSOCIAL_RET_ERROR(ctx);		
+	}
 	
 	ctx = malloc(sizeof(BSocialCtx));
 	if (!ctx) {
@@ -26,11 +35,13 @@ BSocialCtx *bsocial_ctx_new(BSocialError *err_ret) {
 	
 	_bsocial_referenceable_init(BSOCIAL_REFERENCEABLE(ctx), _bsocial_ctx_free);
 	
-	ctx->curl_ctx = curl_easy_init();
-	if (!ctx->curl_ctx) {
+	ctx->client = httpclient_create();
+	if (!ctx->client) {
 		_BSOCIAL_ERROR_SET_RET(err_ret, BSOCIAL_ERROR_HTTP_CLIENT_CREATION_FAILED);
 		_BSOCIAL_RET_ERROR(ctx);
 	}
+	
+	_bsocial_urls_init(&ctx->urls, BSOCIAL_TRUE);
 
 	ctx->token = NULL;
 	

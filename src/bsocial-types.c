@@ -20,3 +20,22 @@ void bsocial_referenceable_unref(BSocialReferenceable *r) {
 		} 
 	} 
 }
+
+char *bsocial_error_message(BSocialError error) {
+	switch (error) {
+		case BSOCIAL_ERROR_NONE:
+			return "Nothing is wrong.";
+			break;
+		case BSOCIAL_ERROR_ALLOC_FAILED:
+			return "Memory allocation failure.";
+			break;
+		case BSOCIAL_ERROR_HTTP_CLIENT_CREATION_FAILED:
+			return "Unable to create HTTP client.";
+			break;
+		case BSOCIAL_ERROR_INVALID_PARAM:
+			return "An invalid parameter has been given.";
+			break;
+		default:
+			return "What the heck?!";
+    }	
+}
