@@ -1,8 +1,9 @@
-#define BSOCIAL_PRIV
 #include <stdlib.h>
 #include <curl/curl.h>
 #include <bsocial-types.h>
+#include <bsocial-types-priv.h>
 #include <bsocial-ctx.h>
+#include <bsocial-ctx-priv.h>
 
 #define _BSOCIAL_RET_ERROR(x) if (x) { free(x); } return NULL 
 
@@ -27,7 +28,7 @@ BSocialCtx *bsocial_ctx_new(BSocialError *err_ret) {
 	
 	ctx->curl_ctx = curl_easy_init();
 	if (!ctx->curl_ctx) {
-		_BSOCIAL_ERROR_SET_RET(err_ret, BSOCIAL_ERROR_UNABLE_TO_CREATE_HTTP_CLIENT);
+		_BSOCIAL_ERROR_SET_RET(err_ret, BSOCIAL_ERROR_HTTP_CLIENT_CREATION_FAILED);
 		_BSOCIAL_RET_ERROR(ctx);
 	}
 

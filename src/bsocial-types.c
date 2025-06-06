@@ -1,6 +1,6 @@
-#define BSOCIAL_PRIV
 #include <stdlib.h>
 #include <bsocial-types.h>
+#include <bsocial-types-priv.h>
 
 void _bsocial_referenceable_init(BSocialReferenceable *r, void (*free_func)(BSocialReferenceable *r)) {
 	r->refs = 1;
