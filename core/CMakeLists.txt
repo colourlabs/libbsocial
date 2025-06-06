@@ -1,0 +1,32 @@
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/include/bsocial.h" version)
+string(REGEX MATCH "BSOCIAL_VERSION_MAJOR ([0-9]*)" _ ${version})
+set(LIBBSOCIAL_VERSION_MAJOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "BSOCIAL_VERSION_MINOR ([0-9]*)" _ ${version})
+set(LIBBSOCIAL_VERSION_MINOR ${CMAKE_MATCH_1})
+
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_C_STANDARD 90)
+file(GLOB LIBBSOCIAL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c")
+add_library(libbsocialcore ${LIBBSOCIAL_SRC})
+generate_export_header(libbsocialcore BASE_NAME "bsocial" EXPORT_MACRO_NAME "BSOCIAL_EXPORT" EXPORT_FILE_NAME "bsocial-export.h")
+set_property(TARGET libbsocialcore PROPERTY OUTPUT_NAME "bsocial")
+set_property(TARGET libbsocialcore PROPERTY C_VISIBILITY_PRESET ${CMAKE_CXX_VISIBILITY_PRESET})
+set_property(TARGET libbsocialcore PROPERTY POSITION_INDEPENDENT_CODE ON)
+target_include_directories(libbsocialcore PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
+target_include_directories(libbsocialcore PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>")
+target_include_directories(libbsocialcore PUBLIC "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+
+string(JOIN " " LIBBSOCIAL_REQUIRES_PRIVATE ${LIBBSOCIAL_PKGCONFIG_DEPS})
+configure_file("${CMAKE_CURRENT_LIST_DIR}/cmake/libbsocial.pc.cmake" libbsocial.pc @ONLY)
+
+file(GLOB LIBBSOCIAL_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
+foreach(LIBBSOCIAL_HEADER ${LIBBSOCIAL_HEADERS})
+	if(NOT (${LIBBSOCIAL_HEADER} MATCHES "priv.h$"))
+		install(FILES ${LIBBSOCIAL_HEADER} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+	endif()
+endforeach()
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/bsocial-export.h" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libbsocial.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+install(TARGETS libbsocialcore ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
