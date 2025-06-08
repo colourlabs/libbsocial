@@ -1,0 +1,33 @@
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/include/bsocial-curl.h" version)
+string(REGEX MATCH "BSOCIAL_CURL_VERSION_MAJOR ([0-9]*)" _ ${version})
+set(LIBBSOCIAL_CURL_VERSION_MAJOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "BSOCIAL_CURL_VERSION_MINOR ([0-9]*)" _ ${version})
+set(LIBBSOCIAL_CURL_VERSION_MINOR ${CMAKE_MATCH_1})
+
+FIND_PACKAGE(CURL REQUIRED)
+file(GLOB LIBBSOCIAL_CURL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c")
+add_library(libbsocialcurl ${LIBBSOCIAL_CURL_SRC})
+add_dependencies(libbsocialcurl libbsocialcore)
+set_property(TARGET libbsocialcurl PROPERTY OUTPUT_NAME "bsocial-curl")
+set_property(TARGET libbsocialcurl PROPERTY C_VISIBILITY_PRESET hidden)
+set_property(TARGET libbsocialcurl PROPERTY POSITION_INDEPENDENT_CODE ON)
+get_target_property(LIBBSOCIAL_CORE_INCLUDES libbsocialcore INCLUDE_DIRECTORIES)
+target_include_directories(libbsocialcurl PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
+target_include_directories(libbsocialcurl PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>")
+target_include_directories(libbsocialcurl PUBLIC "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_directories(libbsocialcurl PRIVATE ${CURL_INCLUDE_DIR})
+target_include_directories(libbsocialcurl PRIVATE ${LIBBSOCIAL_CORE_INCLUDES})
+
+string(JOIN " " LIBBSOCIAL_CURL_REQUIRES_PRIVATE "curl")
+configure_file("${CMAKE_CURRENT_LIST_DIR}/cmake/libbsocial-curl.pc.cmake" libbsocial-curl.pc @ONLY)
+
+file(GLOB LIBBSOCIAL_CURL_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
+foreach(LIBBSOCIAL_CURL_HEADER ${LIBBSOCIAL_CURL_HEADERS})
+	if(NOT (${LIBBSOCIAL_CURL_HEADER} MATCHES "priv.h$"))
+		install(FILES ${LIBBSOCIAL_CURL_HEADER} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+	endif()
+endforeach()
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libbsocial-curl.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+install(TARGETS libbsocialcurl ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
