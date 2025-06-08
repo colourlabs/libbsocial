@@ -8,8 +8,8 @@ typedef struct _BSocialHTTPClient {
 	char *type;
 	
 	struct _BSocialHTTPClientVTable {
-		char *(*get_contents)(char *url);
-		void (*free)(struct _BSocialHTTPClient *client);
+		char *(*get_contents)(struct _BSocialHTTPClient *client, char *url);
+		void (*free_contents)(struct _BSocialHTTPClient *client, char *contents);
 		void *_for_expansion1;
 		void *_for_expansion2;
 		void *_for_expansion3;
@@ -20,6 +20,7 @@ typedef struct _BSocialHTTPClient {
 		void *_for_expansion8;
 		void *_for_expansion9;
 		void *_for_expansion10;
+		void (*free)(struct _BSocialHTTPClient *client);
 	} vtable;
 } BSocialHTTPClient;
 
