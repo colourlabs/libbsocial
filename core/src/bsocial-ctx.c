@@ -1,13 +1,10 @@
 #include <stdlib.h>
-#include <curl/curl.h>
 #include <bsocial-types.h>
 #include <bsocial-types-priv.h>
 #include <bsocial-url-priv.h>
 #include <bsocial-httpclient.h>
 #include <bsocial-ctx.h>
 #include <bsocial-ctx-priv.h>
-
-#define _BSOCIAL_RET_ERROR(x) if (x) { free(x); } return NULL 
 
 void _bsocial_ctx_free(BSocialReferenceable *r) {
 	BSocialCtx* ctx;

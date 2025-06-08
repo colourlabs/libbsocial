@@ -19,4 +19,5 @@ struct _BSocialCtx {
 	char *token;
 };
 
+
 #endif /* BSOCIAL_CTX_PRIV_H */

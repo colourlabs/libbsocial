@@ -17,6 +17,7 @@ target_include_directories(libbsocialcurl PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURR
 target_include_directories(libbsocialcurl PUBLIC "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_include_directories(libbsocialcurl PRIVATE ${CURL_INCLUDE_DIR})
 target_include_directories(libbsocialcurl PRIVATE ${LIBBSOCIAL_CORE_INCLUDES})
+target_link_libraries(libbsocialcurl PRIVATE CURL::libcurl)
 
 string(JOIN " " LIBBSOCIAL_CURL_REQUIRES_PRIVATE "curl")
 configure_file("${CMAKE_CURRENT_LIST_DIR}/cmake/libbsocial-curl.pc.cmake" libbsocial-curl.pc @ONLY)

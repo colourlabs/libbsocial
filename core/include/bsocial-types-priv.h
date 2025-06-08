@@ -13,5 +13,6 @@ void _bsocial_referenceable_init(BSocialReferenceable *r, void (*free_func)(BSoc
 
 /* ERRORS */
 #define _BSOCIAL_ERROR_SET_RET(x, y) if (x) { *x = y; } 
+#define _BSOCIAL_RET_ERROR(x) if (x) { free(x); } return NULL 
 
 #endif /* BSOCIAL_TYPES_PRIV_H */
