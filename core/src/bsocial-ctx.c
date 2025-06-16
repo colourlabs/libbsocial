@@ -38,6 +38,11 @@ BSOCIAL_EXPORT BSocialCtx *bsocial_ctx_new(BSocialHTTPClient *(*httpclient_creat
 		_BSOCIAL_ERROR_SET_RET(err_ret, BSOCIAL_ERROR_HTTP_CLIENT_CREATION_FAILED);
 		_BSOCIAL_RET_ERROR(ctx);
 	}
+	ctx->parser = jsonparser_create();
+	if (!ctx->parser) {
+		_BSOCIAL_ERROR_SET_RET(err_ret, BSOCIAL_ERROR_JSON_PARSER_CREATION_FAILED);
+		_BSOCIAL_RET_ERROR(ctx);
+	}	
 	
 	_bsocial_urls_init(&ctx->urls, BSOCIAL_TRUE);
 
@@ -45,4 +50,14 @@ BSOCIAL_EXPORT BSocialCtx *bsocial_ctx_new(BSocialHTTPClient *(*httpclient_creat
 	
 	_BSOCIAL_ERROR_SET_RET(err_ret, BSOCIAL_ERROR_NONE);	
 	return ctx;
+}
+
+BSocialError bsocial_ctx_login(BSocialCtx *ctx, char *username, char *pwd) {
+	BSocialJSONObject *obj;
+	BSocialJSONObject *strobj;
+	
+	obj = ctx->parser->vtable.parse_str(ctx->parser, "{\"name\":\"John\", \"age\":30, \"car\":null}");
+	strobj = obj->vtable.get_object_of_key(obj, "name");
+	puts(strobj->vtable.get_string_value(strobj));
+	obj->vtable.free(obj);
 }

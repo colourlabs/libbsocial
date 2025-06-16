@@ -35,6 +35,9 @@ char *bsocial_error_message(BSocialError error) {
 		case BSOCIAL_ERROR_INVALID_PARAM:
 			return "An invalid parameter has been given.";
 			break;
+		case BSOCIAL_ERROR_JSON_PARSER_CREATION_FAILED:
+			return "Unable to create JSON parser.";
+			break;
 		default:
 			return "What the heck?!";
     }	

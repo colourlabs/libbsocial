@@ -9,9 +9,10 @@
 struct _BSocialCtx {
 	BSocialReferenceable _parent;
 	
-	/* curl */
+	/* client and parser */
 	BSocialHTTPClient *client;
-	
+	BSocialJSONParser *parser;
+ 
 	/* urls */
 	_BSocialURLs urls;
 	

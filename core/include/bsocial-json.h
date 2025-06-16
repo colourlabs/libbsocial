@@ -24,8 +24,8 @@ typedef struct _BSocialJSONObject {
 
 	struct _BSocialJSONObjectVTable {
 		BSocialJSONObjectType (*get_type)(struct _BSocialJSONObject *obj);
-		struct _BSocialJSONObject *(*get_object)(struct _BSocialJSONObject *obj, char *key);
-		char *(*get_string_value)(struct _BSocialJSONObject *obj, char *key);
+		struct _BSocialJSONObject *(*get_object_of_key)(struct _BSocialJSONObject *obj, char *key);
+		char *(*get_string_value)(struct _BSocialJSONObject *obj);
 		void (*free_string_value)(struct _BSocialJSONObject *obj, char *string);
 		void (*free)(struct _BSocialJSONObject *obj);
 	} vtable;	

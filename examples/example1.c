@@ -11,6 +11,7 @@ int main(int argc, char *argv[])  {
 	
 	ctx = bsocial_ctx_new(bsocial_curl_httpclient_new, bsocial_jansson_jsonparser_new, &err);
 	puts(bsocial_error_message(err));
+	puts(bsocial_error_message(bsocial_ctx_login(ctx, NULL, NULL)));
 	bsocial_referenceable_unref(BSOCIAL_REFERENCEABLE(ctx));
 	
 	return 0;
