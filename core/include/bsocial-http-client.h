@@ -1,8 +1,8 @@
 #include <bsocial-export.h>
 #include <bsocial-types.h>
 
-#ifndef BSOCIAL_HTTPCLIENT_H
-#define BSOCIAL_HTTPCLIENT_H
+#ifndef BSOCIAL_HTTP_CLIENT_H
+#define BSOCIAL_HTTP_CLIENT_H
 
 typedef struct _BSocialHTTPClient {
 	char *type;
@@ -23,5 +23,10 @@ typedef struct _BSocialHTTPClient {
 		void (*free)(struct _BSocialHTTPClient *client);
 	} vtable;
 } BSocialHTTPClient;
+
+#define bsocial_http_client_free(x) x->vtable.free(x)
+#define bsocial_http_client_get_contents(x, s) x->vtable.get_contents(x, s)
+#define bsocial_http_client_free_contents(x, s) x->vtable.get_contents(x, s)
+
 
 #endif /* BSOCIAL_HTTPCLIENT_H */

@@ -11,9 +11,9 @@ typedef struct {
 	json_t *obj;
 } BSocialJanssonJSONObject;
 
-BSocialJSONObject *_bsocial_jansson_jsonobject_get_object_of_key(BSocialJSONObject *obj, char *key);
+BSocialJSONObject *_bsocial_jansson_json_object_get_object_of_key(BSocialJSONObject *obj, char *key);
 
-BSocialJSONObjectType _bsocial_jansson_jsonobject_get_type(BSocialJSONObject *obj) {
+BSocialJSONObjectType _bsocial_jansson_json_object_get_type(BSocialJSONObject *obj) {
 	BSocialJanssonJSONObject *json_object;
 	json_object = (BSocialJanssonJSONObject *)obj;
 
@@ -35,7 +35,7 @@ BSocialJSONObjectType _bsocial_jansson_jsonobject_get_type(BSocialJSONObject *ob
 	}
 }
 
-char *_bsocial_jansson_jsonobject_get_string_value(BSocialJSONObject *obj) {
+char *_bsocial_jansson_json_object_get_string_value(BSocialJSONObject *obj) {
 	BSocialJanssonJSONObject *json_object;
 
 	json_object = (BSocialJanssonJSONObject *)obj;
@@ -43,11 +43,11 @@ char *_bsocial_jansson_jsonobject_get_string_value(BSocialJSONObject *obj) {
 	return (char *)json_string_value(json_object->obj);
 }
 
-void _bsocial_jansson_jsonobject_free_string_value(BSocialJSONObject *obj, char *str) {
+void _bsocial_jansson_json_object_free_string_value(BSocialJSONObject *obj, char *str) {
 	/* do nothing */
 }
 
-void _bsocial_jansson_jsonobject_free(BSocialJSONObject *obj) {
+void _bsocial_jansson_json_object_free(BSocialJSONObject *obj) {
 	BSocialJanssonJSONObject *json_object;
 
 	json_object = (BSocialJanssonJSONObject *)obj;
@@ -57,14 +57,14 @@ void _bsocial_jansson_jsonobject_free(BSocialJSONObject *obj) {
 
 void _fill_parent(BSocialJSONParser *parser, BSocialJSONObject *obj) {
 	obj->from_parser = parser;
-	obj->vtable.get_type = _bsocial_jansson_jsonobject_get_type;
-	obj->vtable.get_object_of_key = _bsocial_jansson_jsonobject_get_object_of_key;
-	obj->vtable.get_string_value = _bsocial_jansson_jsonobject_get_string_value;
-	obj->vtable.free_string_value = _bsocial_jansson_jsonobject_free_string_value;
-	obj->vtable.free = _bsocial_jansson_jsonobject_free;
+	obj->vtable.get_type = _bsocial_jansson_json_object_get_type;
+	obj->vtable.get_object_of_key = _bsocial_jansson_json_object_get_object_of_key;
+	obj->vtable.get_string_value = _bsocial_jansson_json_object_get_string_value;
+	obj->vtable.free_string_value = _bsocial_jansson_json_object_free_string_value;
+	obj->vtable.free = _bsocial_jansson_json_object_free;
 }
 
-BSocialJSONObject *_bsocial_jansson_jsonobject_get_object_of_key(BSocialJSONObject *obj, char *key) {
+BSocialJSONObject *_bsocial_jansson_json_object_get_object_of_key(BSocialJSONObject *obj, char *key) {
 	BSocialJanssonJSONObject *json_object;
 	BSocialJanssonJSONObject *ret_json_object;
 	BSocialJSONObject *pret_json_object;
@@ -86,7 +86,7 @@ BSocialJSONObject *_bsocial_jansson_jsonobject_get_object_of_key(BSocialJSONObje
 	return pret_json_object;
 }
 
-BSocialJSONObject *_bsocial_jansson_jsonparser_parse_str(BSocialJSONParser *parser, char *str) {
+BSocialJSONObject *_bsocial_jansson_json_parser_parse_str(BSocialJSONParser *parser, char *str) {
 	BSocialJanssonJSONObject *json_object;
 	BSocialJSONObject *pjson_object;
 	json_error_t error;
@@ -107,13 +107,13 @@ BSocialJSONObject *_bsocial_jansson_jsonparser_parse_str(BSocialJSONParser *pars
 	return pjson_object;
 }
 
-void _bsocial_jansson_jsonparser_parse_free(BSocialJSONParser *parser) {
+void _bsocial_jansson_json_parser_free(BSocialJSONParser *parser) {
 	if (parser) {
 		free(parser);
 	}
 }
 
-BSocialJSONParser *bsocial_jansson_jsonparser_new(void) {
+BSocialJSONParser *bsocial_jansson_json_parser_new(void) {
 	BSocialJSONParser *parser;
 
 	parser = malloc(sizeof(BSocialJSONParser));
@@ -122,8 +122,8 @@ BSocialJSONParser *bsocial_jansson_jsonparser_new(void) {
 	}
 	
 	parser->type = "Jansson";
-	parser->vtable.parse_str = _bsocial_jansson_jsonparser_parse_str;
-	parser->vtable.free = _bsocial_jansson_jsonparser_parse_free;	
+	parser->vtable.parse_str = _bsocial_jansson_json_parser_parse_str;
+	parser->vtable.free = _bsocial_jansson_json_parser_free;	
 	
 	return parser;	
 }

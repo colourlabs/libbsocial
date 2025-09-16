@@ -1,5 +1,5 @@
 #include <bsocial-types.h>
-#include <bsocial-httpclient.h>
+#include <bsocial-http-client.h>
 #include <bsocial-url-priv.h>
 #include <bsocial-ctx.h>
 

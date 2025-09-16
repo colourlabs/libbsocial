@@ -16,7 +16,7 @@ typedef struct {
 	size_t sz;
 } BSocialCurlHTTPClientStr;
 
-void _bsocial_curl_httpclient_free(BSocialHTTPClient *client) {
+void _bsocial_curl_http_client_free(BSocialHTTPClient *client) {
 	BSocialCurlHTTPClient *cclient;
 
 	cclient = (BSocialCurlHTTPClient *)client;
@@ -24,7 +24,7 @@ void _bsocial_curl_httpclient_free(BSocialHTTPClient *client) {
 	free(cclient);
 }
 
-size_t _bsocial_curl_httpclient_get_contents_write(void *ptr, size_t size, size_t nmemb, void *udata) {
+size_t _bsocial_curl_http_client_get_contents_write(void *ptr, size_t size, size_t nmemb, void *udata) {
 	BSocialCurlHTTPClientStr *str;
 	size_t new_sz;
 	size_t coming_sz;
@@ -43,11 +43,11 @@ size_t _bsocial_curl_httpclient_get_contents_write(void *ptr, size_t size, size_
 	return coming_sz;
 }
 
-void _bsocial_curl_httpclient_free_contents(BSocialHTTPClient *client, char *contents) {
+void _bsocial_curl_http_client_free_contents(BSocialHTTPClient *client, char *contents) {
 	free(contents);
 }
 
-char *_bsocial_curl_httpclient_get_contents(BSocialHTTPClient *client, char *url) {
+char *_bsocial_curl_http_client_get_contents(BSocialHTTPClient *client, char *url) {
 	BSocialCurlHTTPClient *cclient;
 	BSocialCurlHTTPClientStr str;
 	CURLcode res;
@@ -62,7 +62,7 @@ char *_bsocial_curl_httpclient_get_contents(BSocialHTTPClient *client, char *url
 	}
 	
     curl_easy_setopt(cclient->curl, CURLOPT_URL, url);
-    curl_easy_setopt(cclient->curl, CURLOPT_WRITEFUNCTION, _bsocial_curl_httpclient_get_contents_write);
+    curl_easy_setopt(cclient->curl, CURLOPT_WRITEFUNCTION, _bsocial_curl_http_client_get_contents_write);
     curl_easy_setopt(cclient->curl, CURLOPT_WRITEDATA, &str);
     res = curl_easy_perform(cclient->curl);	
 	if (res != CURLE_OK) {
@@ -72,7 +72,7 @@ char *_bsocial_curl_httpclient_get_contents(BSocialHTTPClient *client, char *url
 	return str.str;
 }
 
-BSocialHTTPClient *bsocial_curl_httpclient_new(void) {
+BSocialHTTPClient *bsocial_curl_http_client_new(void) {
 	BSocialCurlHTTPClient *client;
 	BSocialHTTPClient *pclient;
 
@@ -88,9 +88,9 @@ BSocialHTTPClient *bsocial_curl_httpclient_new(void) {
 	
 	pclient = (BSocialHTTPClient *)client;
 	pclient->type = "cURL";
-	pclient->vtable.get_contents = _bsocial_curl_httpclient_get_contents;
-	pclient->vtable.free_contents = _bsocial_curl_httpclient_free_contents;
-	pclient->vtable.free = _bsocial_curl_httpclient_free;	
+	pclient->vtable.get_contents = _bsocial_curl_http_client_get_contents;
+	pclient->vtable.free_contents = _bsocial_curl_http_client_free_contents;
+	pclient->vtable.free = _bsocial_curl_http_client_free;	
 	
 	return pclient;
 }

@@ -13,6 +13,9 @@ typedef struct _BSocialJSONParser {
 	} vtable;
 } BSocialJSONParser;
 
+#define bsocial_json_parser_parse_str(p, s) p->vtable.parse_str(p, s)
+#define bsocial_json_parser_free(p) p->vtable.free(p)
+
 typedef enum {
 	BSOCIAL_JSON_OBJECT_TYPE_NULL = 0,
 	BSOCIAL_JSON_OBJECT_TYPE_OBJECT,
@@ -30,5 +33,12 @@ typedef struct _BSocialJSONObject {
 		void (*free)(struct _BSocialJSONObject *obj);
 	} vtable;	
 } BSocialJSONObject;
+
+#define bsocial_json_object_get_type(o) o->vtable.get_type(o)
+#define bsocial_json_object_get_object_of_key(o, k) o->vtable.get_object_of_key(o, k)
+#define bsocial_json_object_get_string_value(o) o->vtable.get_string_value(o)
+#define bsocial_json_object_free_string_value(o, s) o->vtable.free_string_value(o, s)
+#define bsocial_json_object_free(o) o->vtable.free(o)
+
 
 #endif /* BSOCIAL_JSON_H */
